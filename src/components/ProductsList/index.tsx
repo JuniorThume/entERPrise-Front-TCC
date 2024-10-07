@@ -6,11 +6,10 @@ interface IShapeProductProps {
 }
 
 const ProductsList = ({products}: IShapeProductProps) => {
-  console.log(products, 11);
   return (
     <ul className='mt-4 py-3 h-auto w-[90%] bg-white '>
-      {products.map((productItem: IProduct) => {   
-        return <ListedProduct product={productItem}/>
+      {products.map((productItem: IProduct, index: number) => {   
+        return <ListedProduct product={productItem} key={index} />
       })}
     </ul>
 

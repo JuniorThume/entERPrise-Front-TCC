@@ -21,12 +21,12 @@ const Menu = () => {
           <ItemMenu name="Fornecedores" />
           <ItemMenu name="Compras" />
         </div>
-        <div className="text-black text-center">
+        {/* <div className="text-black text-center hover:text-light_gray">
           <a href="#" className="flex items-center justify-center">
             <MdSupportAgent />
             <p className="ml-2">Contate o suporte</p>
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
   );

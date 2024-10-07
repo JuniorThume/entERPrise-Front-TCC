@@ -3,11 +3,6 @@ export default {
   content: ['./src/**/*.{tsx,ts,html,js,jsx}'],
   theme: {
     extend: {
-      screens: {
-        'sm': '640px',
-        'lg': '1024px',
-        'xl': '1280'
-      },
       height: {
         '100': '100%',
       },

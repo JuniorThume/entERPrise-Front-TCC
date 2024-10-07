@@ -7,7 +7,7 @@ interface IMainProps {
 
 const Main = ({children}: IMainProps) => {
   return (
-    <div className='w-[80%] ml-[20%] pt-[40px] pl-[80px] pr-[80px] flex-grow text-black'>
+    <div className='w-[80%] ml-[20%] pt-[40px] pl-[40px] pr-[40px] flex-grow text-black'>
       { children }
     </div>
   );

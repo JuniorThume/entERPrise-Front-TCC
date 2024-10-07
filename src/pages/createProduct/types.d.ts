@@ -4,7 +4,7 @@ export type createProductFormData = {
   product_category: string;
   product_brand: string;
   product_material: string;
-  // product_img: null | string;
+  product_genre: string;
 }
 
 type createUserFormData = z.infer<typeof createUserFormSchema>

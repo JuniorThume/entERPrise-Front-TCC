@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 interface IProps {
   onClick: () => void;
 }
@@ -27,7 +26,7 @@ const CreateDetails = ({ onClick }: IProps) => {
       <form action={'#'} className='grid grid-cols-5 justify-between content-center p-4'>
         <div className="flex flex-col items-center">
           <label className="mb-1 text-sm" htmlFor="input_size">Tamanho</label>
-          <input className='bg-white  text-center border p-1 rounded-md border-black text-sm w-[50%]' onChange={(e) => setSize(e.currentTarget.value)} value={size} maxLength={4} type="text" name="" id="input_size" />
+          <input className='bg-white  text-center border p-1 rounded-md border-black text-sm w-[50%] ' onChange={(e) => setSize(e.currentTarget.value)} autoComplete="off" value={size} maxLength={4} type="text" name="" id="input_size" />
         </div>
         <div className="flex flex-col items-center">
           <label className="mb-1 text-sm" htmlFor="input_color">Cor</label>

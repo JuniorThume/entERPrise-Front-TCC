@@ -4,18 +4,18 @@ import { MdTune } from "react-icons/md";
 
 const Search = () => {
   return (
-    <div className="flex w-[60%] self-center justify-between mt-12">
-      <div className="flex w-[80%] justify-between items-center border border-black p-2 rounded-full">
+    <div className="grid grid-cols-[3fr_1fr] justify-items-center w-full mt-[40px]">
+      <div className="flex w-full justify-between items-center border border-black p-2 rounded-full">
         <div className="flex w-[100%]">
           <label htmlFor="searchProduct">
-            <span className="text-3l">
+            <span>
               <TbMinusVertical size={24} />
             </span>
           </label>
           <input
             id="searchProduct"
             type="text"
-            maxLength={50}
+            maxLength={150}
             className="text-right bg-white w-[100%] border border-transparent focus:outline-none"
           />
         </div>
@@ -23,11 +23,9 @@ const Search = () => {
           <IoSearchOutline size={24} />
         </button>
       </div>
-      <button type="button" className="flex w-[100px] h-10 bg-[#E1DAC0] justify-between items-center border border-transparent rounded-full p-2">
-        <button className="m-1" >
-          Filtrar
-        </button>
-        <MdTune className="mr-1" />
+      <button type="button" className="flex w-1/2 bg-[#E1DAC0] justify-center items-center border border-transparent rounded-full p-2">
+        <span>Filtrar</span>
+        <MdTune className="ml-1" />
       </button>
     </div>
   );

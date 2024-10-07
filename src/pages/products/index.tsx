@@ -20,7 +20,7 @@ const Products = () => {
 
   return (
     <div>
-      <div className="flex flex-col w-[100%]">
+      <div className="flex flex-col w-[100%] gap gap-[10px]">
         <div className="self-start">
           <h2 className="text-3xl">Produtos</h2>
         </div>
