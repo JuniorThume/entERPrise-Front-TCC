@@ -24,7 +24,8 @@ export default {
         'light_gray': "#D0D0D0",
         'blood_red': "#660000",
         'dark_green': "#013220",
-        'red': "#FF0000"
+        'red': "#FF0000",
+        'blue_light': "#398CBF"
       }
     },
   },
