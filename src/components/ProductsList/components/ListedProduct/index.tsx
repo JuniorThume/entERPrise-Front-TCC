@@ -4,6 +4,7 @@ import { TbAspectRatio } from "react-icons/tb";
 import { IProduct } from "../../../../interfaces/IProduct";
 import EditProductModal from "../../../EditProductModal";
 import { API } from "../../../../api/axios";
+import DeleteProductModal from "../../../DeleteProductModal";
 
 interface IShapeProductProps {
   product: IProduct;
@@ -36,9 +37,7 @@ const ListedProduct = ({ product }: IShapeProductProps) => {
           <TbAspectRatio size={24} />
         </button>
         <EditProductModal product={product}/>
-        <button className="bg-main rounded-md bg-remove p-1 mx-1" onClick={handleDelete}>
-          <FaRegTrashAlt size={20} />
-        </button>
+        <DeleteProductModal product={product} />
       </div>
     </li>
   );

@@ -22,7 +22,7 @@ const ShowDetails = () => {
       </div>
       {
         details.map((_, i) => {
-          return <ShowDetailsItem details={_}  index={i}/>
+          return <ShowDetailsItem details={_} index={i}/>
         })
       }
     </div>
