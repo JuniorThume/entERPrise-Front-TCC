@@ -12,7 +12,8 @@ interface IEditProductProps {
 const EditProductModal = ({ product } :IEditProductProps) => {
   const [modalState, setModalState] = useState<boolean>(false);
   const handleUpdateProduct = (data :ProductFormData) => {
-    alert(data.product_name);
+    alert(Object.keys(product));
+    alert(product.image);
   };
   return (
     <button

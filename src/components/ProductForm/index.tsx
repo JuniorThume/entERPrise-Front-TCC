@@ -18,19 +18,10 @@ interface IFormProps {
   closeModal: (state: boolean) => void;
   product?: IProduct;
 }
-
-// const convertFileToBase64 = (file: File): Promise<string> => {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file as Blob);
-//     reader.onloadend = () => {
-//       const base64String = reader.result as string;
-//       const base64 = base64String.split(",")[1];
-//       if (base64) resolve(base64);
-//     };
-//     reader.onerror = (error) => reject(error);
-//   });
-// };
+async function imageToArrayBuffer(file) {
+  const arrayBuffer = await file.arrayBuffer(); // Converte o Blob para ArrayBuffer
+  return arrayBuffer;
+}
 
 const ProductForm = ({ onSubmit, onUpdate, closeModal, product }: IFormProps) => {
   const {
@@ -38,11 +29,12 @@ const ProductForm = ({ onSubmit, onUpdate, closeModal, product }: IFormProps) =>
     control,
     register,
     formState: { errors },
+    setValue
   } = useForm<ProductFormData>({
     resolver: zodResolver(ProductFormSchema),
   });
   const [productImgFile, setProductImgFile] = useState("");
-  // const [productImgBase64, setProductImgBase64] = useState("");
+  const [productImgArrayBuffer, setProductImgArrayBuffer] = useState("");
   const imageInput = useRef<HTMLInputElement>(null);
 
   const [defaultOption, setDefaultOption] = useState(true);
@@ -57,9 +49,9 @@ const ProductForm = ({ onSubmit, onUpdate, closeModal, product }: IFormProps) =>
     if (e.target.files === null) {
       throw new Error("A imagem é invalida");
     }
-    // setProductImgBase64(await convertFileToBase64(e.target.files[0]));
-
     setProductImgFile(URL.createObjectURL(e.target.files[0]));
+    setValue('product_image', await imageToArrayBuffer(e.target.files[0]));
+    alert(await imageToArrayBuffer(e.target.files[0]))
   };
 
   return (
@@ -270,6 +262,7 @@ const ProductForm = ({ onSubmit, onUpdate, closeModal, product }: IFormProps) =>
           <input
             type="file"
             accept="image/*"
+            {...register("product_image")}
             ref={imageInput}
             className="text-[10px] text-black mt-1"
             onChange={setProductImgOnChange}
