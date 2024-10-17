@@ -4,7 +4,7 @@ export interface IProduct {
   description: string;
   genre: string;
   id: number;
-  image_url: string;
+  image: string ;
   infos?: [];
   material: string;
   name: string;

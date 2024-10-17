@@ -10,7 +10,9 @@ const ProductFormSchema = z.object({
   product_material: z.string({message: "Material é um campo obrigatório"})
     .min(3, "O Material deve conter no mínimo 3 caracteres"),
   product_description: z.string().max(255, "A descrição tem um limite máximo de 255 caracteres").optional(),
-  product_genre: z.enum(["Masculino", "Feminino", "Unissex"], {message: "Selecione um gênero válido"})
+  product_genre: z.enum(["Masculino", "Feminino", "Unissex"], { message: "Selecione um gênero válido" }),
+  product_image: z.any().optional(),
+  button_action: z.string().optional(),
 })
 
 export { ProductFormSchema };

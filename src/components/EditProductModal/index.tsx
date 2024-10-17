@@ -7,20 +7,21 @@ import { ProductFormData } from "../../zodSchemas/product/types";
 
 interface IEditProductProps {
   product: IProduct;
+  refreshFunc: () => void;
 }
 
-const EditProductModal = ({ product } :IEditProductProps) => {
+const EditProductModal = ({ product, refreshFunc } :IEditProductProps) => {
   const [modalState, setModalState] = useState<boolean>(false);
   const handleUpdateProduct = (data :ProductFormData) => {
-    alert(Object.keys(product));
-    alert(product.image);
+    console.log(data)
+    refreshFunc()
   };
   return (
     <button
-      className="rounded-md bg-edit p-1 mx-1"
+      className="rounded-md p-1 mx-1 hover:scale-110"
       onClick={() => setModalState(true)}
     >
-      <MdOutlineModeEdit size={24} />
+      <MdOutlineModeEdit size={24} color="#60a5fa" />
       <ModalWrapper
         modalState={modalState}
         setModalState={setModalState}

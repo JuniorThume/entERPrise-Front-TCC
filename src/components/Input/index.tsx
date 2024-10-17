@@ -1,12 +1,13 @@
 import { Control, Controller, FieldName } from "react-hook-form";
 import { ProductFormData } from "../../zodSchemas/product/types";
+import { LoginFormData } from "../../zodSchemas/login/types";
 
 interface IInputProps {
   type: string;
   label: string;
-  control: Control<ProductFormData>;
+  control: Control<ProductFormData|LoginFormData>;
   inputValue: string | number;
-  name: FieldName<ProductFormData>;
+  name: FieldName<ProductFormData|LoginFormData>;
 }
 
 const Input = ({ type, label, inputValue, control, name }: IInputProps) => {

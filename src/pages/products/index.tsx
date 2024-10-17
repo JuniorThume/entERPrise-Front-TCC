@@ -1,3 +1,4 @@
+import PrivateLayout from "../../components/PrivateLayout";
 import ProductsList from "../../components/ProductsList";
 import Search from "../../components/Search";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -6,7 +7,8 @@ import { Link } from "react-router-dom";
 const Products = () => {
 
   return (
-    <div>
+    <PrivateLayout>
+      
       <div className="flex flex-col w-[100%] gap gap-[10px]">
         <div className="self-start">
           <h2 className="text-3xl">Produtos</h2>
@@ -19,7 +21,7 @@ const Products = () => {
       </div>
       <ProductsList />
       
-    </div>
+    </PrivateLayout>
     
   );
 }

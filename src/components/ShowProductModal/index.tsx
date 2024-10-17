@@ -12,10 +12,10 @@ const ShowProductModal = ({product}: IShowProductModalProps) => {
   const [modalState, setModalState] = useState<boolean>(false);
   return (
     <button
-      className="rounded-md p-1 bg-expand mx-1"
+      className="rounded-md p-1 mx-1 hover:scale-110"
       onClick={() => setModalState(true)}
     >
-      <TbAspectRatio size={24} />
+      <TbAspectRatio size={24} color="gray" />
       <ModalWrapper modalState={modalState} setModalState={setModalState}>
         <ShowProduct product={product} onModal={true} />
       </ModalWrapper>

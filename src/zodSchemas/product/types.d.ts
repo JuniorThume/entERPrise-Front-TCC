@@ -5,6 +5,9 @@ export type ProductFormData = {
   product_brand: string;
   product_material: string;
   product_genre: string;
+  product_image: string;
+  button_action: string;
+  
 }
 
 type createUserFormData = z.infer<typeof UserFormSchema>

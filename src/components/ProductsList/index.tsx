@@ -2,22 +2,43 @@ import { useEffect, useState } from "react";
 import { IProduct } from "../../interfaces/IProduct";
 import ListedProduct from "./components/ListedProduct";
 import NoneProductFound from "../NoneProductFound";
+import { API } from "../../api/axios";
 
-const ProductsList = () => {
+const Products = () => {
   const [productsArr, setProducts] = useState<[IProduct] | []>([]);
 
-  useEffect(() => {
-    fetch("http://localhost:3000/api/v1/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
+  const refreshProductList = async () => {
+    await API.get("/products")
+      .then((response) => {
+        console.log(response.data);
+        return response.data;
+      })
+      .then((data: [IProduct]) => {
+        data.forEach((item: IProduct) => {
+          if (item.image) {
+            item.image = `data:image/png;base64,${item.image}`
+          }
+        })
+        setProducts(data);
+      })
       .catch((err) => console.log(err.message));
+  };
+
+  useEffect(() => {
+    refreshProductList();
   }, []);
 
   return (
     <ul className="mt-4 py-3 h-auto w-[90%] bg-white ">
-      {productsArr ? (
+      {productsArr.length !== 0 ? (
         productsArr.map((productItem: IProduct, index: number) => {
-          return <ListedProduct product={productItem} key={index} />;
+          return (
+            <ListedProduct
+              product={productItem}
+              key={index}
+              refreshProductList={refreshProductList}
+            />
+          );
         })
       ) : (
         <NoneProductFound />
@@ -26,4 +47,4 @@ const ProductsList = () => {
   );
 };
 
-export default ProductsList;
+export default Products;
