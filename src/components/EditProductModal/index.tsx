@@ -14,7 +14,7 @@ const EditProductModal = ({ product, refreshFunc } :IEditProductProps) => {
   const [modalState, setModalState] = useState<boolean>(false);
   const handleUpdateProduct = (data :ProductFormData) => {
     console.log(data)
-    refreshFunc()
+    refreshFunc();
   };
   return (
     <button
@@ -25,6 +25,7 @@ const EditProductModal = ({ product, refreshFunc } :IEditProductProps) => {
       <ModalWrapper
         modalState={modalState}
         setModalState={setModalState}
+        modalTitle="Alterar Produto"
         children={
           <ProductForm onSubmit={handleUpdateProduct} onUpdate={true} closeModal={setModalState} product={product} />
         }

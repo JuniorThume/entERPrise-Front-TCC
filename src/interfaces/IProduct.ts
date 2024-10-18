@@ -5,7 +5,7 @@ export interface IProduct {
   genre: string;
   id: number;
   image: string ;
-  infos?: [];
+  detaisl?: [];
   material: string;
   name: string;
 }

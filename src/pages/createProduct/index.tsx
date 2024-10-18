@@ -3,8 +3,8 @@ import ProductForm from "../../components/ProductForm";
 import { API } from "../../api/axios";
 import { IProduct } from "../../interfaces/IProduct";
 import PrivateLayout from "../../components/PrivateLayout";
-import AppContext from "../../context/AppContext";
-import { useContext } from "react";
+import { useAuth } from "../../context/AppContext";
+
 
 export interface ISubmitForm {
   product_name: string;
@@ -19,9 +19,8 @@ export interface ISubmitForm {
 
 const CreateProduct = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AppContext);
+  const context = useAuth();
   const onSubmitForm = async (dados: ISubmitForm) => {
-    console.log(dados.button_action);
     await API.post(
       "/products",
       JSON.stringify({
@@ -36,13 +35,12 @@ const CreateProduct = () => {
       {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${user?.token}`,
+          "Authorization": `Bearer ${context.token}`,
         },
       }
     )
       .then((response) => response.data)
       .then((data: IProduct) => {
-        alert(dados.button_action)
         switch (dados.button_action) {
           case "update":
             break;
@@ -50,7 +48,6 @@ const CreateProduct = () => {
             navigate("/products");
             break;
           case "create_follow":
-            alert(data.id);
             navigate(`/products/${data.id}/details/create`);
             break;
         }

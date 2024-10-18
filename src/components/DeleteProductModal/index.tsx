@@ -3,6 +3,7 @@ import ModalWrapper from "../ModalWrapper";
 import { IProduct } from "../../interfaces/IProduct";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { API } from "../../api/axios";
+import { useAuth } from "../../context/AppContext";
 
 interface IDeleteModal {
   product: IProduct;
@@ -11,8 +12,13 @@ interface IDeleteModal {
 
 const DeleteProductModal = ({ product, refreshFunc }: IDeleteModal) => {
   const [modalState, setModalState] = useState<boolean>(false);
+  const context = useAuth();
   const handleDelete = async (id: number) => {
-    await API.delete(`/products/${id}`)
+    await API.delete(`/products/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${context.token}`
+      }
+    })
     setModalState(false);
     refreshFunc()
   }
@@ -23,7 +29,7 @@ const DeleteProductModal = ({ product, refreshFunc }: IDeleteModal) => {
       onClick={() => setModalState(true)}
     >
       <FaRegTrashAlt size={20} color="#fb7185" />
-      <ModalWrapper modalState={modalState} setModalState={setModalState}> 
+      <ModalWrapper modalState={modalState} setModalState={setModalState} modalTitle="Excluir Produto"> 
         <h2>Você deseja remover este produto do estoque?</h2>
         <div className="w-[20vw] flex gap-x-[5px] self-center mt-[5px]">
           <button type="submit" className="w-full bg-remove text-white" onMouseUp={() => handleDelete(product.id)}>Excluir</button>

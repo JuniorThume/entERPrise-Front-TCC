@@ -10,7 +10,7 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { API } from "../../api/axios";
 import { AxiosError } from "axios";
 
-type jwtData = JwtPayload & {
+export type jwtData = JwtPayload & {
   user: UserType;
 }
 
@@ -31,17 +31,17 @@ const Login = () => {
     )
       .then((response) => response.data)
       .then((token) => {
-        setIsLogged(true);
-        const jwt_data: jwtData = jwtDecode(token);
-        const user_data: UserType = {
-          id: jwt_data.user.id,
-          username: jwt_data.user.username,
-          token: token
-        }
-        setUser(user_data);
         Cookies.set("logged", "true");
-        Cookies.set('user_token', JSON.stringify(token));
-        navigate("/products");
+        Cookies.set('user_token', token);
+        if (Cookies.get('user_token')) {
+          const jwt_data: jwtData = jwtDecode(token);
+          setUser({
+            id: jwt_data.user.id,
+            username: jwt_data.user.username,
+          })
+          setIsLogged(true);
+          navigate("/products");
+        }
       }).catch((err: AxiosError) => {
         if (err.status === 401) {
           alert("Usuário ou senha inválidos!");

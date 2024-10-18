@@ -16,7 +16,7 @@ const ShowProductModal = ({product}: IShowProductModalProps) => {
       onClick={() => setModalState(true)}
     >
       <TbAspectRatio size={24} color="gray" />
-      <ModalWrapper modalState={modalState} setModalState={setModalState}>
+      <ModalWrapper modalState={modalState} setModalState={setModalState} modalTitle="Produto">
         <ShowProduct product={product} onModal={true} />
       </ModalWrapper>
     </button>

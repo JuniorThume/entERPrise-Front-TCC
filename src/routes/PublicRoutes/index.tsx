@@ -1,28 +1,24 @@
-import { Link, Navigate, Outlet, RouteObject } from "react-router-dom";
+import { Navigate, Outlet, RouteObject } from "react-router-dom";
 import Login from "../../pages/login";
-import { useContext } from "react";
-import AppContext from "../../context/AppContext";
+import { useAuth } from "../../context/AppContext";
 
 
 const PublicRoute = () => {
-  const { isLogged } = useContext(AppContext)
-  return (!isLogged ? <Outlet/> : <Navigate to={'/products'}/>);
+  const { isLogged } = useAuth();
+  return (!isLogged ? <Outlet/> : null);
 }
 
-const PublicRoutes: [RouteObject] = ([
+const PublicRoutes: Array<RouteObject> = ([
   {
-    path: "/login",
+    path: "/",
     element: <PublicRoute />,
     children: [
       {
         path: '/login',
-        element: <Login />
+        element: <Login />, 
       }
     ],
-    errorElement: <>
-      <h1 className="text-black">Página indisponivel</h1>
-      <Link to="/login">Voltar para a home</Link>
-    </>
+    errorElement: <Navigate replace to={'/login'}/>
   }
 ])
 
