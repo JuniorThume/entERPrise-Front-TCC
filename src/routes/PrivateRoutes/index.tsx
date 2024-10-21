@@ -3,8 +3,9 @@ import CreateProduct from "../../pages/createProduct";
 import CreateProductDetails from "../../pages/createProductDetails";
 import { Navigate, Outlet, RouteObject } from "react-router-dom";
 import { useContext } from "react";
-import AppContext from "../../context/AppContext";
+import AppContext from "../../context/appContext/AppContext.tsx";
 import NotFound from "../../pages/notFound.tsx";
+import Home from "../../pages/home/index.tsx";
 
 export const PrivateRoute = () => {
   const { isLogged } = useContext(AppContext);
@@ -13,23 +14,30 @@ export const PrivateRoute = () => {
 
 const PrivateRoutes: Array<RouteObject> = [
   {
-    path: "/",
+    id: "privateRoutes",
     element: <PrivateRoute />,
     children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
       {
         path: "/products",
         element: <Products />,
       },
       {
         path: "/products/create",
-        element: <CreateProduct />
+        element: <CreateProduct />,
       },
       {
         path: "/products/:id/details",
-        element: <CreateProductDetails />
-      }
+        element: <CreateProductDetails />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
-    errorElement: <NotFound />,
   },
 ];
 

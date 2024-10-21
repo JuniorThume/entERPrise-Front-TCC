@@ -1,26 +1,23 @@
 import { Navigate, Outlet, RouteObject } from "react-router-dom";
 import Login from "../../pages/login";
-import { useAuth } from "../../context/AppContext";
-
+import { useAppContext } from "../../context/appContext/hook/useAppContext";
 
 const PublicRoute = () => {
-  const { isLogged } = useAuth();
-  return (!isLogged ? <Outlet/> : null);
-}
+  const { isLogged } = useAppContext();
+  return !isLogged ? <Outlet /> : <Navigate to="/products" />;
+};
 
-const PublicRoutes: Array<RouteObject> = ([
+const PublicRoutes: Array<RouteObject> = [
   {
-    path: "/",
     element: <PublicRoute />,
     children: [
       {
-        path: '/login',
-        element: <Login />, 
-      }
+        path: "/login",
+        element: <Login />,
+      },
     ],
-    errorElement: <Navigate replace to={'/login'}/>
-  }
-])
+  },
+];
 
 export { PublicRoute };
 
