@@ -169,6 +169,7 @@ const ProductForm = ({
                   </option>
                 )}
                 <option value="Feminino">Feminino</option>
+                <option value="Infantil">Infantil</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Unissex">Unissex</option>
               </select>
