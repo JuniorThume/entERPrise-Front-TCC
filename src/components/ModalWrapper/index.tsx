@@ -28,7 +28,6 @@ const ModalWrapper = ({ modalState, setModalState, children, modalTitle }: IModa
           >
             <MdOutlineCancel size={24} color="gray" />
           </button>
-
         </div>
         { children }
       </div>

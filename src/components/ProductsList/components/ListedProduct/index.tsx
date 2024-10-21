@@ -18,7 +18,7 @@ const ListedProduct = ({ product, refreshProductList }: IShapeProductProps) => {
         <img
           src={product.image ? product.image : imagem}
           alt="Imagem do Produto"
-          className="w-16 rounded-full"
+          className="w-[60px] h-[60px] rounded-full"
         />
       </div>
       <div>{product?.name}</div>

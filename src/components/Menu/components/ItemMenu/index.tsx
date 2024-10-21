@@ -1,30 +1,27 @@
-import { Link } from 'react-router-dom';
-import './index.css';
-import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+import { useAppContext } from "../../../../context/appContext/hook/useAppContext";
 
 interface props {
   name: string;
   linkTo?: string;
-  
 }
-
 const ItemMenu = ({ name, linkTo = "#" }: props) => {
-  const [isSelect, setIsSelect] = useState(false);
+  const contextApp = useAppContext();
+  const pathSelect = contextApp.path;
 
-  // useEffect(() => {
-  //   const primaryResourcePath = window.location.pathname.split('/')[1];
-    
-  //   if (linkTo === primaryResourcePath) {
-  //     setIsSelect(true);
-  //   }
-  // })
   return (
-    <Link to={`/${linkTo}`} >
+    <Link to={`/${linkTo}`} onClick={() => contextApp.setPath(linkTo)}>
       <div className="text-black border-transparent text-lg m-4 ">
-        <p className={`hovered px-2 hover:ml-1 hover:border-l-2 hover:text-white ${isSelect && "border-l-2 text-white ml-1"}`}>{ name }</p>
+        <p
+          className={`transition-[0.01] px-2 hover:ml-1 hover:border-l-2 hover:text-white ${
+            linkTo == pathSelect && "border-l-2 text-white ml-1"
+          }`}
+        >
+          {name}
+        </p>
       </div>
     </Link>
   );
-}
+};
 
 export default ItemMenu;

@@ -4,16 +4,41 @@ import { useState } from "react";
 import { IProduct } from "../../interfaces/IProduct";
 import ProductForm from "../ProductForm";
 import { ProductFormData } from "../../zodSchemas/product/types";
+import { API } from "../../api/axios";
+import { useAppContext } from "../../context/appContext/hook/useAppContext";
 
 interface IEditProductProps {
   product: IProduct;
   refreshFunc: () => void;
 }
 
-const EditProductModal = ({ product, refreshFunc } :IEditProductProps) => {
+const EditProductModal = ({ product, refreshFunc }: IEditProductProps) => {
   const [modalState, setModalState] = useState<boolean>(false);
-  const handleUpdateProduct = (data :ProductFormData) => {
-    console.log(data)
+  const context = useAppContext();
+  const handleUpdateProduct = async (data: ProductFormData) => {
+    console.log(data);
+    await API.put(
+      `/products/${product.id}`,
+      JSON.stringify({
+        name: data.product_name,
+        description: data.product_description,
+        category: data.product_category,
+        brand: data.product_brand,
+        material: data.product_material,
+        genre: data.product_genre,
+        image: data.product_image,
+      }),
+      {
+        headers: {
+          Authorization: `Bearer ${context.token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.data)
+      .then(() => {
+        setModalState(false);
+      });
     refreshFunc();
   };
   return (
@@ -27,7 +52,12 @@ const EditProductModal = ({ product, refreshFunc } :IEditProductProps) => {
         setModalState={setModalState}
         modalTitle="Alterar Produto"
         children={
-          <ProductForm onSubmit={handleUpdateProduct} onUpdate={true} closeModal={setModalState} product={product} />
+          <ProductForm
+            onSubmit={handleUpdateProduct}
+            onUpdate={true}
+            closeModal={setModalState}
+            product={product}
+          />
         }
       />
     </button>
