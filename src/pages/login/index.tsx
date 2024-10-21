@@ -4,15 +4,15 @@ import { LoginFormSchema } from "../../zodSchemas/login/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import AppContext, { UserType } from "../../context/AppContext";
+import AppContext, { UserType } from "../../context/appContext/AppContext";
 import Cookies from "js-cookie";
-import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import { API } from "../../api/axios";
 import { AxiosError } from "axios";
 
 export type jwtData = JwtPayload & {
   user: UserType;
-}
+};
 
 const Login = () => {
   const {
@@ -32,21 +32,22 @@ const Login = () => {
       .then((response) => response.data)
       .then((token) => {
         Cookies.set("logged", "true");
-        Cookies.set('user_token', token);
-        if (Cookies.get('user_token')) {
+        Cookies.set("user_token", token);
+        if (Cookies.get("user_token")) {
           const jwt_data: jwtData = jwtDecode(token);
           setUser({
             id: jwt_data.user.id,
             username: jwt_data.user.username,
-          })
+          });
           setIsLogged(true);
           navigate("/products");
         }
-      }).catch((err: AxiosError) => {
+      })
+      .catch((err: AxiosError) => {
         if (err.status === 401) {
           alert("Usuário ou senha inválidos!");
         }
-      })
+      });
   };
 
   return (
