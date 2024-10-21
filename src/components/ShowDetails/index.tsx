@@ -1,7 +1,4 @@
-
-// import { useEffect } from "react";
 import ShowDetailsItem from "./ShowDetailsItem";
-// import { useParams } from "react-router-dom";
 
 const ShowDetails = () => {
   const details = [
@@ -22,7 +19,7 @@ const ShowDetails = () => {
       </div>
       {
         details.map((_, i) => {
-          return <ShowDetailsItem details={_}  index={i}/>
+          return <ShowDetailsItem details={_} index={i}/>
         })
       }
     </div>

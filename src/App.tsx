@@ -1,18 +1,17 @@
-import './App.css'
-import Menu from './components/Menu/index.tsx'
-import Main from './components/Main/index.tsx';
-import AppRoutes from './routes/index.tsx';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./App.css";
+import PrivateRoutes from "./routes/PrivateRoutes/index.tsx";
+import PublicRoutes from "./routes/PublicRoutes/index.tsx";
+import { AppContextProvider } from "./context/AppContext.tsx";
 
-function App() {
+const routes = createBrowserRouter([...PublicRoutes, ...PrivateRoutes]);
 
+const App = () => {
   return (
-    <>
-      <Menu />
-      <Main>
-        <AppRoutes />
-      </Main>
-    </>
-  )
-}
+    <AppContextProvider>
+      <RouterProvider router={routes} />
+    </AppContextProvider>
+  );
+};
 
-export default App
+export default App;

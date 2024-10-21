@@ -5,54 +5,52 @@ import { GrFormNextLink } from "react-icons/gr";
 import { MdDelete } from "react-icons/md";
 import ArrowTooltips from "../ToolTip";
 import image from "./../../assets/fundo-sem-imagem.png";
-import { createProductFormData } from "../../pages/createProduct/types";
+import { ProductFormData } from "../../zodSchemas/product/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createProductFormSchema } from "../../pages/createProduct/schema";
+import { ProductFormSchema } from "../../zodSchemas/product/schema";
 import { ISubmitForm } from "../../pages/createProduct";
+import { IProduct } from "../../interfaces/IProduct";
+import { IoIosClose } from "react-icons/io";
+import { convertFileToBase64 } from "../../utils/base64ToBlob";
 
 interface IFormProps {
   onSubmit: (dados: ISubmitForm) => void;
+  onUpdate: boolean;
+  closeModal: (state: boolean) => void;
+  product?: IProduct;
 }
 
-// const convertFileToBase64 = (file: File): Promise<string> => {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file as Blob);
-//     reader.onloadend = () => {
-//       const base64String = reader.result as string;
-//       const base64 = base64String.split(",")[1];
-//       if (base64) resolve(base64);
-//     };
-//     reader.onerror = (error) => reject(error);
-//   });
-// };
-
-const ProductForm = ({ onSubmit }: IFormProps) => {
+const ProductForm = ({
+  onSubmit,
+  onUpdate,
+  closeModal,
+  product,
+}: IFormProps) => {
   const {
     handleSubmit,
     control,
     register,
     formState: { errors },
-  } = useForm<createProductFormData>({
-    resolver: zodResolver(createProductFormSchema),
+    setValue,
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(ProductFormSchema),
   });
-  const [productImgFile, setProductImgFile] = useState("");
-  // const [productImgBase64, setProductImgBase64] = useState("");
+  const [productImgFile, setProductImgFile] = useState(onUpdate ? product?.image : "");
   const imageInput = useRef<HTMLInputElement>(null);
-
   const [defaultOption, setDefaultOption] = useState(true);
 
   const removeUploadImage = () => {
     setProductImgFile("");
     if (imageInput.current) imageInput.current.value = "";
   };
-  const setProductImgOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files === null) {
-      throw new Error("A imagem é invalida")
+  const setProductImgOnChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.files !== null) {
+      const prod_value = await convertFileToBase64(e.target.files[0]);
+      setProductImgFile(URL.createObjectURL(e.target.files[0]));
+      setValue("product_image", prod_value);
     }
-    // setProductImgBase64(await convertFileToBase64(e.target.files[0]));
-
-    setProductImgFile(URL.createObjectURL(e.target.files[0]));
   };
 
   return (
@@ -68,6 +66,7 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
             <Controller
               name="product_name"
               control={control}
+              defaultValue={product ? product.name : ""}
               render={({ field }) => {
                 return (
                   <input
@@ -89,6 +88,7 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
             <Controller
               name="product_category"
               control={control}
+              defaultValue={product ? product.category : ""}
               render={({ field }) => {
                 return (
                   <input
@@ -110,6 +110,7 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
             <Controller
               name="product_brand"
               control={control}
+              defaultValue={product ? product.brand : ""}
               render={({ field }) => {
                 return (
                   <input
@@ -131,6 +132,7 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
             <Controller
               name="product_material"
               control={control}
+              defaultValue={product ? product.material : ""}
               render={({ field }) => {
                 return (
                   <input
@@ -159,6 +161,7 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
                 className={`bg-white text-black border p-1 rounded-sm placeholder:text-xs ${
                   errors.product_genre ? "border-red" : "border-black"
                 }`}
+                defaultValue={product ? product.genre : ""}
               >
                 {defaultOption && (
                   <option value="" className="text-xs">
@@ -176,6 +179,7 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
             <Controller
               name="product_description"
               control={control}
+              defaultValue={product ? product.description : ""}
               render={({ field }) => {
                 return (
                   <textarea
@@ -191,24 +195,65 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
               rules={{ required: false }}
             />
           </div>
-          <div className="flex justify-start items-center w-full text-lg">
-            <button
-              type="submit"
-              className="w-[80%] flex justify-center items-center border px-2 rounded-lg text-main-green border-main-green"
-            >
-              <p className="mr-2">Criar</p>
-              <FaCheck size={16} color="main_green" />
-            </button>
-          </div>
-          <div className="flex justify-center items-center">
-            <ArrowTooltips title="Você seguirá para a tela de registro de tamanhos, cores e valores." />
-            <button type="submit" className="flex items-center w-[100%] ">
-              <div className="flex justify-center items-center text-white text-lg border w-full px-2 rounded-lg bg-main-green">
-                <p className="mr-2">Criar e Seguir</p>
-                <GrFormNextLink size={20} />
+
+          {onUpdate ? (
+            <>
+              <div className="flex justify-start items-center w-full text-lg ">
+                <input
+                  type="hidden"
+                  {...register("button_action", { required: false })}
+                />
+                <button
+                  type="submit"
+                  onMouseUp={() => setValue('button_action', 'update')}
+                  className={`w-full flex justify-center items-center px-2 rounded-lg bg-blue_light text-white`}
+                >
+                  <p className="mr-2">Atualizar</p>
+                  <FaCheck size={16} color="blue_light" />
+                </button>
               </div>
-            </button>
-          </div>
+              <div className="flex justify-end items-center ">
+                <button
+                  type="reset"
+                  className={`flex items-center w-[70%]`}
+                  onMouseUp={() => closeModal(false)}
+                >
+                  <div
+                    className={`flex justify-center items-center text-lg border w-full px-2 rounded-lg bg-white text-red`}
+                  >
+                    <p className="mr-2">Cancelar</p>
+                    <IoIosClose size={24} />
+                  </div>
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-start items-center w-full text-lg">
+                <button
+                  type="submit"
+                  onMouseUp={() => setValue('button_action', 'create')}
+                  className="w-[80%] flex justify-center items-center border px-2 rounded-lg text-main-green border-main-green"
+                >
+                  <p className="mr-2">Criar</p>
+                  <FaCheck size={16} color="main_green" />
+                </button>
+              </div>
+              <div className="flex justify-center items-center">
+                <ArrowTooltips title="Você seguirá para a tela de registro de tamanhos, cores e valores." />
+                <button
+                  type="submit"
+                  className="flex items-center w-[100%] "
+                  onMouseUp={() => setValue('button_action', 'create_follow')}
+                >
+                  <div className="flex justify-center items-center text-white text-lg border w-full px-2 rounded-lg bg-main-green">
+                    <p className="mr-2">Criar e Seguir</p>
+                    <GrFormNextLink size={20} />
+                  </div>
+                </button>
+              </div>
+            </>
+          )}
         </div>
         <div className="text-white flex flex-col justify-self-center self-center">
           <div className="relative text-black w-full flex justify-center">
@@ -232,6 +277,7 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
           <input
             type="file"
             accept="image/*"
+            {...register("product_image")}
             ref={imageInput}
             className="text-[10px] text-black mt-1"
             onChange={setProductImgOnChange}
@@ -239,10 +285,8 @@ const ProductForm = ({ onSubmit }: IFormProps) => {
         </div>
       </form>
       <div id="show_input_errors" className="w-full text-red text-xs mt-[4px]">
-        {Object.values(errors).map(error => {
-          return (
-            <p>{ error.message }</p>
-          )
+        {Object.values(errors).map((error) => {
+          return <p>{error.message}</p>;
         })}
       </div>
     </>

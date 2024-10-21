@@ -1,5 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import ProductForm from "../../components/ProductForm";
-// import { useNavigate } from "react-router-dom";
+import { API } from "../../api/axios";
+import { IProduct } from "../../interfaces/IProduct";
+import PrivateLayout from "../../components/PrivateLayout";
+import { useAuth } from "../../context/AppContext";
+
 
 export interface ISubmitForm {
   product_name: string;
@@ -8,43 +13,58 @@ export interface ISubmitForm {
   product_brand: string;
   product_material: string;
   product_genre: string;
+  product_image: string;
+  button_action: string;
 }
 
 const CreateProduct = () => {
-
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const context = useAuth();
   const onSubmitForm = async (dados: ISubmitForm) => {
-    console.log(JSON.stringify(dados))
-    await fetch('http://localhost:3000/api/v1/products', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    await API.post(
+      "/products",
+      JSON.stringify({
         name: dados.product_name,
         description: dados.product_description,
         category: dados.product_category,
         brand: dados.product_brand,
         material: dados.product_material,
-        genre: "Masculino"
-      })
-    }).then((data) => {
-      console.log(data.json());
-    }).catch(() => {
-      console.error('joje');
-    })
-
-    // navigate('/products')
-    
-  }
+        genre: dados.product_genre,
+        image: dados.product_image,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${context.token}`,
+        },
+      }
+    )
+      .then((response) => response.data)
+      .then((data: IProduct) => {
+        switch (dados.button_action) {
+          case "update":
+            break;
+          case "create":
+            navigate("/products");
+            break;
+          case "create_follow":
+            navigate(`/products/${data.id}/details/create`);
+            break;
+        }
+      });
+  };
 
   return (
-    <div>
-      <h2 className="text-lg 2xl:text-xl mb-[10px]">Cadastrar um novo produto</h2>
-      
-      <ProductForm onSubmit={onSubmitForm} />
-      
-    </div>
+    <PrivateLayout>
+      <h2 className="text-lg 2xl:text-xl mb-[10px]">
+        Cadastrar um novo produto
+      </h2>
+      <ProductForm
+        onSubmit={onSubmitForm}
+        onUpdate={false}
+        closeModal={() => {}}
+      />
+    </PrivateLayout>
   );
 };
 

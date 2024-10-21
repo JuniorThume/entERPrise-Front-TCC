@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
-  content: ['./src/**/*.{tsx,ts,html,js,jsx}'],
+  content: [
+    './src/**/*.{tsx,ts,html,js,jsx}',
+  ],
   theme: {
     extend: {
       height: {
@@ -24,7 +27,8 @@ export default {
         'light_gray': "#D0D0D0",
         'blood_red': "#660000",
         'dark_green': "#013220",
-        'red': "#FF0000"
+        'red': "#FF0000",
+        'blue_light': "#398CBF"
       }
     },
   },
