@@ -5,10 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AppContext, { UserType } from "../../context/appContext/AppContext";
-import Cookies from "js-cookie";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { API } from "../../api/axios";
 import { AxiosError } from "axios";
+import Cookies from "js-cookie";
 
 export type jwtData = JwtPayload & {
   user: UserType;
@@ -31,16 +31,15 @@ const Login = () => {
     )
       .then((response) => response.data)
       .then((token) => {
-        Cookies.set("logged", "true");
-        Cookies.set("user_token", token);
-        if (Cookies.get("user_token")) {
+        if (token) {
+          Cookies.set('access_token', token)
           const jwt_data: jwtData = jwtDecode(token);
           setUser({
             id: jwt_data.user.id,
             username: jwt_data.user.username,
           });
           setIsLogged(true);
-          navigate("/products");
+          navigate("/");
         }
       })
       .catch((err: AxiosError) => {

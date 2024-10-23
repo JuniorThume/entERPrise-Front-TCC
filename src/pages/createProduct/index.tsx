@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import ProductForm from "../../components/ProductForm";
-import { API } from "../../api/axios";
+import { API, refreshTokenRequest } from "../../api/axios";
 import { IProduct } from "../../interfaces/IProduct";
 import PrivateLayout from "../../components/PrivateLayout";
 import { useAppContext } from "../../context/appContext/hook/useAppContext";
+import { AxiosError } from "axios";
+
 
 export interface ISubmitForm {
   product_name: string;
@@ -18,7 +20,7 @@ export interface ISubmitForm {
 
 const CreateProduct = () => {
   const navigate = useNavigate();
-  const context = useAppContext();
+  const contextApp = useAppContext();
   const onSubmitForm = async (dados: ISubmitForm) => {
     await API.post(
       "/products",
@@ -34,7 +36,7 @@ const CreateProduct = () => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${context.token}`,
+          Authorization: `Bearer ${contextApp.token}`,
         },
       }
     )
@@ -47,6 +49,14 @@ const CreateProduct = () => {
           case "create_follow":
             navigate(`/products/${data.id}/details/create`);
             break;
+        }
+      }).catch(async (err: AxiosError) => {
+        if (err.status === 401) {
+          alert(`
+            Sua sessão havia expirado!
+            Ela foi reestabelicida automaticamente.
+          `);
+          refreshTokenRequest(contextApp.setToken);
         }
       });
   };

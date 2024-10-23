@@ -44,19 +44,18 @@ const AppContextProvider = ({ children }: IAppContext) => {
   const [token, setToken] = useState<string | null>(null);
   const [path, setPath] = useState(window.location.pathname.split("/")[1]);
   const [isLogged, setIsLogged] = useState(
-    Cookies.get("logged") ? true : false
+    Cookies.get("access_token") ? true : false
   );
 
   useEffect(() => {
-    const has_cookie = Cookies.get("user_token");
+    const has_cookie = Cookies.get("access_token");
     setToken(has_cookie || null);
     if (has_cookie) {
       const user_data: jwtData = jwtDecode(has_cookie);
       setUser(user_data.user);
     }
     if (!isLogged) {
-      Cookies.remove("logged");
-      Cookies.remove("user_token");
+      Cookies.remove("access_token");
     }
   }, [isLogged]);
   return (

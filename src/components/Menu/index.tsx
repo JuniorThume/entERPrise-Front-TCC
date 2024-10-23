@@ -2,6 +2,7 @@ import ItemMenu from "./components/ItemMenu";
 import "../../App.css";
 import { useContext, useEffect } from "react";
 import AppContext from "../../context/appContext/AppContext";
+import { Link } from "react-router-dom";
 
 const Menu = () => {
   const { setIsLogged, path } = useContext(AppContext);
@@ -9,10 +10,10 @@ const Menu = () => {
   return (
     <div className="fixed top-0 flex flex-col h-[100vh] w-[20%] bg-[--menu-background] shadow-menu">
       <div className="text-white text-center p-8 font-bold">
-        <button type="button">
+        <Link to={'/'} type="button">
           <h1 className="text-2xl font-semibold">STAR MODAS</h1>
           <h6 className="text-[10px] font-normal">by entERPrise</h6>
-        </button>
+        </Link>
       </div>
       <div className="flex flex-col justify-between h-100">
         <div className="">

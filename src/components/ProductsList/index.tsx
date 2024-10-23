@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { IProduct } from "../../interfaces/IProduct";
 import ListedProduct from "./components/ListedProduct";
 import NoneProductFound from "../NoneProductFound";
-import { API } from "../../api/axios";
+import { API, refreshTokenRequest } from "../../api/axios";
 import Loading from "../Loading";
 import { setStringImage } from "../../utils/setStringImage";
 import NavigatePages from "./components/NavigatePages";
 import { useSearch } from "../../context/searchContext/hook/useSearch";
 import { useAppContext } from "../../context/appContext/hook/useAppContext";
+import { AxiosError } from "axios";
 
 interface IPaginate {
   current_page: number;
@@ -64,7 +65,11 @@ const Products = () => {
             });
             setProducts(result.data);
           })
-          .catch((err) => console.log(err));
+          .catch(async (err: AxiosError) => {
+            if (err.status === 401) {
+              refreshTokenRequest(contextApp.setToken);
+            }
+          });
       }
     };
     handleRefresh();
