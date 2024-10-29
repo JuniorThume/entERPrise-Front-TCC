@@ -1,41 +1,38 @@
 import { createContext, useState } from "react";
 
-interface IQuery {
+export interface IQuery {
   name?: string | null;
   description?: string | null;
   category?: string | null;
   material?: string | null;
-  gender?: string | null;
+  genre?: string | null;
   brand?: string | null;
-  page?: number | null;
-  limit?: number | null;
+  page?: string | null;
+  limit?: string | null;
 }
 
 type PropsSearchContext = {
-  query: IQuery;
-  setQuery: (query: IQuery) => void;
+  query: URLSearchParams;
+  setQuery: (query: URLSearchParams) => void;
+  current_page: number;
+  setPage: (page: number) => void
 }
 
 const defaultValues = {
-  query: {
-    brand: null,
-    description: null,
-    category: null,
-    material: null,
-    gender: null,
-    name: null,
-    limit: null,
-    page: null,
-  } as IQuery,
-  setQuery: () => {},
+  query: new URLSearchParams(location.search),
+  setQuery: () => { },
+  current_page: 1,
+  setPage: () => { }
 };
 
 const SearchContext = createContext<PropsSearchContext>(defaultValues);
 
 const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [query, setQuery] = useState(defaultValues.query);
+  const [current_page, setPage] = useState(defaultValues.current_page);
+  
   return (
-    <SearchContext.Provider value={{ query, setQuery }}>
+    <SearchContext.Provider value={{ query, setQuery, current_page, setPage }}>
       { children }
     </SearchContext.Provider>
   );

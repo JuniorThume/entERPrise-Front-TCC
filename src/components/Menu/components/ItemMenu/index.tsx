@@ -7,7 +7,7 @@ interface props {
 }
 const ItemMenu = ({ name, linkTo = "#" }: props) => {
   const contextApp = useAppContext();
-  const pathSelect = contextApp.path;
+  const pathSelect = location.pathname.split('/')[1];
 
   return (
     <Link to={`/${linkTo}`} onClick={() => contextApp.setPath(linkTo)}>

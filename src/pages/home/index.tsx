@@ -27,7 +27,7 @@ const Home = () => {
         <div>
           <h3 className="underline">SUGESTÕES</h3>
           <p className="w-1/2">
-            Caso queira indicar alguma funcionalidade que software possa ter,
+            Caso queira indicar alguma funcionalidade que o software possa ter,
             apontar bugs ou algo relacionado ao sistema, entre em contato pelo
             canais abaixo:
           </p>
@@ -50,7 +50,10 @@ const Home = () => {
                 thumejuniorvalmir@gmail.com
               </a>
             </li>
-            <li>LinkedIn</li>
+            <li>
+              LinkedIn: {' '}
+              <a href="https://www.linkedin.com/in/valmir-thume-junior/" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer"> https://www.linkedin.com/in/valmir-thume-junior/</a>
+            </li>
           </ul>
         </div>
       </div>
