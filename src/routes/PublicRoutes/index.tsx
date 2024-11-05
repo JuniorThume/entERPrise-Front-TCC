@@ -4,7 +4,7 @@ import { useAppContext } from "../../context/appContext/hook/useAppContext";
 
 const PublicRoute = () => {
   const { isLogged } = useAppContext();
-  return !isLogged ? <Outlet /> : <Navigate to="/products" />;
+  return !isLogged ? <Outlet /> : <Navigate to="/" />;
 };
 
 const PublicRoutes: Array<RouteObject> = [

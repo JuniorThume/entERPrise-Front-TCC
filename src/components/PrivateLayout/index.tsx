@@ -1,17 +1,14 @@
-import { ReactNode } from 'react';
 import Menu from '../Menu';
 import Main from '../Main';
+import { Outlet } from 'react-router-dom';
 
-interface ILayoutPrivateProps {
-  children: ReactNode;
-}
-
-const PrivateLayout = ({ children }: ILayoutPrivateProps) => {
+const PrivateLayout = () => {
+  
   return (
     <>
       <Menu />
       <Main>
-        { children }
+        { <Outlet /> }
       </Main>
     </>
   );

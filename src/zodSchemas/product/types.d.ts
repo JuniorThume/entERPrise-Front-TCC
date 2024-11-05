@@ -1,3 +1,5 @@
+import { ProductFormSchema } from "./schema";
+
 export type ProductFormData = {
   product_name: string;
   product_description: string;
@@ -7,7 +9,6 @@ export type ProductFormData = {
   product_genre: string;
   product_image: string;
   button_action: string;
-  
 }
 
-type createUserFormData = z.infer<typeof UserFormSchema>
+type createProductFormData = z.infer<typeof ProductFormSchema>

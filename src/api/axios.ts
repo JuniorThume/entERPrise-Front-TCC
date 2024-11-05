@@ -9,7 +9,6 @@ export const API = axios.create({
   },
 });
 
-
 export const refreshTokenRequest = async (setToken: (data: string) => void ) => {
   return await API.post(
     "/auth/refresh-token",

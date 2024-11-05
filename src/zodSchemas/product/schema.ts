@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const ProductFormSchema = z.object({
+const CreateProductFormSchema = z.object({
   product_name: z.string({message: "Nome é um campo obrigatório"})
   .min(3, "O Nome deve conter no mínimo 3 caracteres"),
   product_brand: z.string({message: "Marca é um campo obrigatório"})
@@ -15,4 +15,4 @@ const ProductFormSchema = z.object({
   button_action: z.string().optional(),
 })
 
-export { ProductFormSchema };
+export { CreateProductFormSchema };

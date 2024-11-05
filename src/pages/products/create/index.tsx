@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import ProductForm from "../../components/ProductForm";
-import { API, refreshTokenRequest } from "../../api/axios";
-import { IProduct } from "../../interfaces/IProduct";
-import PrivateLayout from "../../components/PrivateLayout";
-import { useAppContext } from "../../context/appContext/hook/useAppContext";
+import ProductForm from "../../../components/ProductForm";
+import { API, refreshTokenRequest } from "../../../api/axios";
+import { IProduct } from "../../../interfaces/IProduct";
+import { useAppContext } from "../../../context/appContext/hook/useAppContext";
 import { AxiosError } from "axios";
-
 
 export interface ISubmitForm {
   product_name: string;
@@ -50,7 +48,8 @@ const CreateProduct = () => {
             navigate(`/products/${data.id}/details/create`);
             break;
         }
-      }).catch(async (err: AxiosError) => {
+      })
+      .catch(async (err: AxiosError) => {
         if (err.status === 401) {
           alert(`
             Sua sessão havia expirado!
@@ -62,7 +61,7 @@ const CreateProduct = () => {
   };
 
   return (
-    <PrivateLayout>
+    <>
       <h2 className="text-lg 2xl:text-xl mb-[10px]">
         Cadastrar um novo produto
       </h2>
@@ -71,7 +70,7 @@ const CreateProduct = () => {
         onUpdate={false}
         closeModal={() => {}}
       />
-    </PrivateLayout>
+    </>
   );
 };
 

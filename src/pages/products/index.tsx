@@ -1,4 +1,3 @@
-import PrivateLayout from "../../components/PrivateLayout";
 import ProductsList from "../../components/ProductsList";
 import Search from "../../components/Search";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -60,11 +59,11 @@ const Products = () => {
       if (contextApp.token) {
         navigate(`?${contextSearch.query.toString()}`, { replace: true });
         await API.get(
-          `/products${contextSearch.query ? "?" + contextSearch.query : ""}`,
+          `${!contextSearch.query ? "/products" : `/products?${contextSearch.query.toString()}`}`,
           {
             headers: {
               Authorization: `Bearer ${contextApp.token}`,
-              "Content-Type": "application/json",
+              Accept: "application/json",
             },
           }
         )
@@ -72,6 +71,7 @@ const Products = () => {
             return response.data;
           })
           .then((result: IResponsePaginate) => {
+            console.log(result);
             result.data.forEach((item: IProduct) => {
               if (item.image) {
                 item.image = setStringImage(item.image);
@@ -97,7 +97,7 @@ const Products = () => {
     handleRefresh();
   }, [contextApp, contextSearch.query, refresh, navigate]);
   return (
-    <PrivateLayout>
+    <>
       <SearchContext>
         <div className="flex flex-col w-[100%] gap gap-[10px]">
           <div className="self-start">
@@ -136,7 +136,7 @@ const Products = () => {
           )}
         </div>
       </SearchContext>
-    </PrivateLayout>
+    </>
   );
 };
 

@@ -30,7 +30,6 @@ const Search = ({refreshFunc}: ISearchProps) => {
   const { register, handleSubmit, setValue } = useForm();
   const [filterModalState, setFilterModalState] = useState(false);
   const contextSearch = useSearch();
-
   const [filters, setFilters] = useState<Filters>({});
   const searchParams = contextSearch.query;
   const onSubmit = () => {
@@ -86,7 +85,7 @@ const Search = ({refreshFunc}: ISearchProps) => {
             {...register("name", { required: false })}
             onChange={(e) => handleFilterChange("name", e.target.value)}
             defaultValue={""}
-            className="text-right w-full bg-white focus:border-none focus:outline-none p-0"
+            className="text-right w-full bg-white border-none focus:outline-none p-0"
           />
         </div>
         <button type="submit"

@@ -7,8 +7,8 @@ import ArrowTooltips from "../ToolTip";
 import image from "./../../assets/fundo-sem-imagem.png";
 import { ProductFormData } from "../../zodSchemas/product/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductFormSchema } from "../../zodSchemas/product/schema";
-import { ISubmitForm } from "../../pages/createProduct";
+import { CreateProductFormSchema } from "../../zodSchemas/product/schema";
+import { ISubmitForm } from "../../pages/products/create";
 import { IProduct } from "../../interfaces/IProduct";
 import { IoIosClose } from "react-icons/io";
 import { convertFileToBase64 } from "../../utils/base64ToBlob";
@@ -33,9 +33,11 @@ const ProductForm = ({
     formState: { errors },
     setValue,
   } = useForm<ProductFormData>({
-    resolver: zodResolver(ProductFormSchema),
+    resolver: zodResolver(CreateProductFormSchema),
   });
-  const [productImgFile, setProductImgFile] = useState(onUpdate ? product?.image : "");
+  const [productImgFile, setProductImgFile] = useState(
+    onUpdate ? product?.image : ""
+  );
   const imageInput = useRef<HTMLInputElement>(null);
   const [defaultOption, setDefaultOption] = useState(true);
 
@@ -206,7 +208,7 @@ const ProductForm = ({
                 />
                 <button
                   type="submit"
-                  onMouseUp={() => setValue('button_action', 'update')}
+                  onMouseUp={() => setValue("button_action", "update")}
                   className={`w-full flex justify-center items-center px-2 rounded-lg bg-blue_light text-white`}
                 >
                   <p className="mr-2">Atualizar</p>
@@ -233,7 +235,7 @@ const ProductForm = ({
               <div className="flex justify-start items-center w-full text-lg">
                 <button
                   type="submit"
-                  onMouseUp={() => setValue('button_action', 'create')}
+                  onMouseUp={() => setValue("button_action", "create")}
                   className="w-[80%] flex justify-center items-center border px-2 rounded-lg text-main-green border-main-green"
                 >
                   <p className="mr-2">Criar</p>
@@ -245,7 +247,7 @@ const ProductForm = ({
                 <button
                   type="submit"
                   className="flex items-center w-[100%] "
-                  onMouseUp={() => setValue('button_action', 'create_follow')}
+                  onMouseUp={() => setValue("button_action", "create_follow")}
                 >
                   <div className="flex justify-center items-center text-white text-lg border w-full px-2 rounded-lg bg-main-green">
                     <p className="mr-2">Criar e Seguir</p>

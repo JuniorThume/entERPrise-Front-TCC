@@ -1,11 +1,9 @@
-import PrivateLayout from "../../components/PrivateLayout";
 import { useAppContext } from "../../context/appContext/hook/useAppContext";
-
 
 const Home = () => {
   const context = useAppContext();
   return (
-    <PrivateLayout>
+    <>
       <div className="grid grid-rows-3 h-full">
         <div>
           <h1 className="text-black">
@@ -57,7 +55,7 @@ const Home = () => {
           </ul>
         </div>
       </div>
-    </PrivateLayout>
+    </>
   );
 };
 
