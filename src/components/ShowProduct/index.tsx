@@ -10,10 +10,10 @@ interface IShowProduct {
 const ShowProduct = ({ product, onModal }: IShowProduct) => {
   const navigate = useNavigate();
   return (
-    <div className={`${!onModal ? "w-[75%]" : "w-full"} grid grid-cols-[auto_2fr_auto] self-center p-2 border border-black rounded-xl mt-3`}>
+    <div className={`${!onModal ? "w-[75%]" : "w-full"} grid grid-cols-[200px_400px_auto] self-center p-2 border border-black rounded-xl mt-3`}>
       <div className={`${onModal && "text-lg flex flex-col justify-between"} `}>
         <h3 className="pt-1 text-md italic">{product?.name}</h3>
-        <div className="text-sm mt-[10px] pl-2 font-semibold gap-y-[2px]">
+        <div className="text-sm mt-[10px] p-3 font-semibold gap-y-[2px]">
           <p>
             Categoria: <span className="font-normal">{product?.category}</span>
           </p>

@@ -18,10 +18,9 @@ const DeleteCredentialModal = ({
 }: IDeleteCredentialModal) => {
   const [modalState, setModalState] = useState<boolean>(false);
   const deleteCredential = async (id: number) => {
-    await API.delete(`/auth/credentials/${id}`)
+    await API.delete(`/credentials/${id}`)
       .then((response) => response.status)
       .then((status) => {
-        console.log(status);
         if (status === 204) {
           setModalState(false);
           refreshCredentialList();

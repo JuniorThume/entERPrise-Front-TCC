@@ -4,8 +4,8 @@ export interface IEmployee {
   name: string;
   personal_data: {
     id: number;
-    cpf: string;
-    email: string;
+    cpf: string | null;
+    email: string | null;
     phone: string | null;
   };
 };

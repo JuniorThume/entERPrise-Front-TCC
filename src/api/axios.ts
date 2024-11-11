@@ -11,7 +11,7 @@ export const API = axios.create({
 
 export const refreshTokenRequest = async (setToken: (data: string) => void ) => {
   return await API.post(
-    "/auth/refresh-token",
+    "/credentials/refresh-token",
     JSON.stringify({
       access_token: Cookies.get("access_token"),
     })

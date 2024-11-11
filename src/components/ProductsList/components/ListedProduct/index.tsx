@@ -11,7 +11,6 @@ interface IShapeProductProps {
 }
 
 const ListedProduct = ({ product, refreshProductList }: IShapeProductProps) => {
-
   return (
     <li className="text-sm mg-4 p-1 border border-black rounded-2xl text-black grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] items-center m-2 text-center"> 
       <div className="rounded-full">
@@ -25,7 +24,7 @@ const ListedProduct = ({ product, refreshProductList }: IShapeProductProps) => {
       <div>{product?.brand}</div>
       <div>{product?.category}</div>
       <div>{product?.genre}</div>
-      <div>+info</div>
+      <div>{`${product.options?.length} opções `}</div>
       <div className="flex justify-self-end col-span-2">
         <ShowProductModal product={product} />
         <EditProductModal product={product} refreshFunc={refreshProductList}/>

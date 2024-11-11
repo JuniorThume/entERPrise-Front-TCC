@@ -8,9 +8,9 @@ import DeleteEmployeeModal from "./delete";
 import UpdateEmployeeModal from "./update";
 
 enum roles {
-  'salesman' = "Vendedor",
-  'admin' = "Administrador",
-  'manager' = "Gerente",
+  salesman = "Vendedor",
+  admin = "Administrador",
+  manager = "Gerente",
 }
 
 const Employees = () => {
@@ -62,7 +62,11 @@ const Employees = () => {
                   odd ? "bg-light_gray" : "bg-white rounded"
                 } `}
               >
-                <div>{roles[employee?.role]}</div>
+                <div>
+                  {
+                    roles[employee?.role as keyof typeof roles]
+                  }
+                </div>
                 <div>{employee?.name}</div>
                 <div className={`${!personal_data && 'italic text-sm'} `}>{personal_data ? personal_data?.email : 'E-mail não cadastrado' }</div>
                 <div

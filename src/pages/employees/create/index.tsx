@@ -5,6 +5,8 @@ import { API } from "../../../api/axios";
 import { EmployeeFormData } from "../../../zodSchemas/employees/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmployeeFormSchema } from "../../../zodSchemas/employees/schema";
+import { AxiosError } from "axios";
+import { useNotification } from "../../../context/notifyContext/hook/useNotification";
 
 interface ICreateEmployeeModal {
   modalState: boolean;
@@ -13,13 +15,13 @@ interface ICreateEmployeeModal {
   refreshEmployeesList: () => void;
 }
 
-
 const CreateEmployeeModal = ({
   modalTitle,
   setModalState,
   modalState,
   refreshEmployeesList
 }: ICreateEmployeeModal) => {
+  const notification = useNotification();
   const { register, handleSubmit, formState: { isValid, errors }, reset } = useForm<EmployeeFormData>({
     resolver: zodResolver(EmployeeFormSchema)
   });
@@ -32,24 +34,28 @@ const CreateEmployeeModal = ({
         role: data.employee_role,
         name: data.employee_name,
       })
-    ).then(response => response.status)
+    )
+      .then(response => response.status)
       .then(status => {
         if (status === 201) {
-          setModalState(false);
           refreshEmployeesList()
         }
+      }).catch((err: AxiosError) => {
+        if (err.response?.status === 409) {
+          notification.notify("Já existe um funcionário com este nome")
+        }
+        setModalState(false);
+      }).finally(() => {
+        setModalState(false);
       })
-      
       ;
   };
 
   useEffect(() => {
     if (!modalState) {
       reset();
-    } else {
-      refreshEmployeesList();
     }
-  }, [setEmployeeRole, modalState, reset, refreshEmployeesList]);
+  }, [setEmployeeRole, modalState, reset]);
 
   return (
     <ModalWrapper
@@ -59,10 +65,10 @@ const CreateEmployeeModal = ({
     >
       <form
         action=""
-        className="w-full grid grid-rows-[2fr_1fr] p-2"
+        className="w-[400px] grid grid-rows-[2fr_1fr] p-2"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div>
+        <div className="w-full">
           <div className="flex flex-col">
             <label htmlFor="role_employee">Cargo</label>
             <select

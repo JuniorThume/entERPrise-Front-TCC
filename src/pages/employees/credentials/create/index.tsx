@@ -8,6 +8,7 @@ import { CredentialFormSchema } from "../../../../zodSchemas/credentials/schema"
 import { CredentialFormData } from "../../../../zodSchemas/credentials/types";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import { ICredential } from "../../../../interfaces/ICredential";
 
 interface ICreateCredetnailsModal {
   modalState: boolean;
@@ -23,6 +24,7 @@ const CreateCredentialModal = ({
   refreshCredentialsList,
 }: ICreateCredetnailsModal) => {
   const [employees, setEmployee] = useState<IEmployee[]>();
+  const [credentials, setCredentials] = useState<ICredential[]>();
   const [employeeSelected, setEmployeeSelected] = useState<string>('');
   const [seePassword, setSeePassword] = useState<boolean>(false);
   const [seeConfirmPassword, setSeeConfirmPassword] = useState<boolean>(false);
@@ -41,9 +43,15 @@ const CreateCredentialModal = ({
       .then((data) => setEmployee(data));
   };
 
+  const getCredentials = async () => {
+    await API.get("/credentials")
+      .then((response) => response.data)
+      .then((data) => setCredentials(data));
+  };
+
   const onSubmit = async (data: CredentialFormData) => {
     await API.post(
-      "/auth/credentials",
+      "/credentials",
       JSON.stringify({
         username: data.credential_username,
         password: data.credential_password,
@@ -64,6 +72,7 @@ const CreateCredentialModal = ({
       reset();
       setEmployeeSelected('');
     } else {
+      getCredentials();
       getEmployees();
     }
   }, [modalState, reset]);
@@ -95,8 +104,12 @@ const CreateCredentialModal = ({
               { employeeSelected == '' && <option className="text-sm" value=''>Selecione um funcionário</option>}
               {modalState &&
                 employees?.map((employee) => {
-                  return <option value={employee.id}>{employee.name}</option>;    
-                })}
+                  const credentials_ids = credentials?.map((credential) => credential.employee_id);
+                  if (!credentials_ids?.includes(employee.id)) {
+                    return <option key={employee.id} value={employee.id}>{employee.name}</option>
+                  }
+                }) 
+              }
             </select>
           </div>
           <div className="flex flex-col">
