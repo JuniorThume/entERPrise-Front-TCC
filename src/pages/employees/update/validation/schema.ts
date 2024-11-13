@@ -1,54 +1,73 @@
 import { z } from "zod";
 
-const UpdateEmployeeFormSchema = z.object({
-  employee: z.object({
-    role: z.string({
-      message: "Função do funcionário é um campo obrigatório",
-    }),
+const UpdateEmployeeFormSchema = z
+  .object({
+    role: z.string({ message: "Função do funcionário é um campo obrigatório" }),
     name: z
       .string()
       .min(3, "O Nome do funcionário deve conter no mínimo 3 caracteres"),
-  }),
-  personal_data: z.object({
-    email: z
-      .string({ message: "Função do funcionário é um campo obrigatório" })
-      .email({ message: "Um e-mail válido deve ser inserido" })
-      .or(
-        z.literal("").transform((val) => {
-          if (!val) {
-            return null;
-          }
-          return val;
-        })
-      ),
+    email: z.string().optional(),
+    cpf: z.string().optional(),
+    phone: z.string().optional(),
+  })
+  .superRefine(({ email, cpf, phone }, ctx) => {
+    if (email !== "" && !z.string().email().safeParse(email).success) {
+      ctx.addIssue({
+        message: "Insira um e-mail valido.",
+        path: ["email"],
+        code: "custom",
+      });
+    }
+    if (
+      cpf !== "" &&
+      !z
+        .string()
+        .length(11)
+        .regex(/(\d{11})/g)
+        .safeParse(cpf).success
+    ) {
+      ctx.addIssue({
+        message:
+          "O CPF deve ser composto apenas por números, precisa conter 11 dígitos e ser válido.",
+        path: ["cpf"],
+        code: "custom",
+      });
+    }
 
-    cpf: z
-      .string()
-      .length(11, "Digite um CPF válido com 11 dígitos")
-      .regex(/^(\d{11})$/g, "Insira um CPF válido de 11 dígitos")
-      .or(z.literal(""))
-      .transform((val) => {
-        if (!val) {
-          return null;
-        }
-        return val;
-      }),
-    phone: z
-      .string()
-      .min(11, "O número deve ter, no mínimo, 11 dígitos")
-      .max(
-        11,
-        "O número de telefone deve ter no máximo 11 dígitos, sendo o DDD e os outros 9 dígitos que compõem o número"
-      )
-      .regex(/^(\d{9}|\d{11})$/g, "O número deve conter apenas números, certifique-se de inserir com o DDD")
-      .or(z.literal(""))
-      .transform((val) => {
-        if (!val) {
-          return null;
-        }
-        return val;
-      }),
-  }),
-});
+    if (
+      phone !== "" &&
+      !z
+        .string()
+        .length(11)
+        .regex(/(\d{11})/g)
+        .safeParse(phone).success
+    ) {
+      ctx.addIssue({
+        message:
+          "O Telefone deve ser composto apenas por números, precisa conter 11 dígitos(incluindo DDD).",
+        path: ["phone"],
+        code: "custom",
+      });
+    }
+  })
+  .transform((data) => {
+    // if (data.name === employee.name) {
+    //   delete data.name;
+    // }
+    // if (data.role === employee.role) {
+    //   delete data.role;
+    // }
+    if (data.email === "" /*|| data.email === employee.personal_data.email*/) {
+      delete data.email;
+    }
+    if (data.cpf === "" /*|| data.cpf === employee.personal_data.cpf*/) {
+      delete data.cpf;
+    }
+    if (data.phone === "" /*|| data.phone === employee.personal_data.phone*/) {
+      delete data.phone;
+    }
+
+    return data;
+  });
 
 export { UpdateEmployeeFormSchema };

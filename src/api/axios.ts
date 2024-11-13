@@ -6,10 +6,10 @@ export const API = axios.create({
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-  },
+  }
 });
 
-export const refreshTokenRequest = async (setToken: (data: string) => void ) => {
+export const refreshTokenRequest = async (setToken: (data: string) => void) => {
   return await API.post(
     "/credentials/refresh-token",
     JSON.stringify({

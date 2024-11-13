@@ -4,6 +4,7 @@ import { API, refreshTokenRequest } from "../../../api/axios";
 import { IProduct } from "../../../interfaces/IProduct";
 import { useAppContext } from "../../../context/appContext/hook/useAppContext";
 import { AxiosError } from "axios";
+import { useNotification } from "../../../context/notifyContext/hook/useNotification";
 
 export interface ISubmitForm {
   product_name: string;
@@ -19,6 +20,7 @@ export interface ISubmitForm {
 const CreateProduct = () => {
   const navigate = useNavigate();
   const contextApp = useAppContext();
+  const notification = useNotification();
   const onSubmitForm = async (dados: ISubmitForm) => {
     await API.post(
       "/products",
@@ -49,12 +51,9 @@ const CreateProduct = () => {
             break;
         }
       })
-      .catch(async (err: AxiosError) => {
-        if (err.status === 401) {
-          alert(`
-            Sua sessão havia expirado!
-            Ela foi reestabelicida automaticamente.
-          `);
+      .catch((error: AxiosError) => {
+        if (error.status === 401) {
+          notification.notify(error.message);
           refreshTokenRequest(contextApp.setToken);
         }
       });

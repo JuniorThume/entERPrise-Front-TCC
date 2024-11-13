@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ICredential } from "../../../../interfaces/ICredential";
-import { API } from "../../../../api/axios";
+import { API, refreshTokenRequest } from "../../../../api/axios";
 import ModalWrapper from "../../../../components/ModalWrapper";
 import { IEmployee } from "../../../../interfaces/IEmployee";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { AxiosError } from "axios";
+import { useAppContext } from "../../../../context/appContext/hook/useAppContext";
 
 interface IDeleteCredentialModal {
   refreshCredentialList: () => void;
@@ -17,6 +19,7 @@ const DeleteCredentialModal = ({
   employee
 }: IDeleteCredentialModal) => {
   const [modalState, setModalState] = useState<boolean>(false);
+  const contextApp = useAppContext();
   const deleteCredential = async (id: number) => {
     await API.delete(`/credentials/${id}`)
       .then((response) => response.status)
@@ -25,7 +28,11 @@ const DeleteCredentialModal = ({
           setModalState(false);
           refreshCredentialList();
         }
-      }).catch((error) => console.log(error));
+      }).catch((error: AxiosError) => {
+        if (error.status === 401) {
+          refreshTokenRequest(contextApp.setToken);
+        }
+      });
   };
 
   return (

@@ -15,68 +15,68 @@ interface IUpdateEmployeeModal {
 }
 
 interface IFormData {
-  employee: {
-    employee_role: string;
-    employee_name: string;
-  };
-  personal_data: {
-    personal_data_email: string;
-    personal_data_cpf: string;
-    personal_data_phone: string;
-  }
+  role?: string;
+  name?: string;
+  email?: string | undefined;
+  cpf?: string | undefined;
+  phone?: string | undefined;
+  
 }
-
 const UpdateEmployeeModal = ({
   refreshEmployeesList,
   employee,
 }: IUpdateEmployeeModal) => {
   const notification = useNotification();
-  const { handleSubmit, register, reset, formState: {errors} } = useForm<updateEmployeeFormData>({
+  // const [employee, setEmployee] = useState<IEmployee>(employee_clicked);
+  // console.log(employee)
+  
+  const { handleSubmit, register, reset, formState: {errors, isValid} } = useForm<updateEmployeeFormData>({
     resolver: zodResolver(UpdateEmployeeFormSchema),
+    reValidateMode: 'onBlur',
+    resetOptions: {
+      keepIsSubmitSuccessful: false
+    },
   });
   const [modalState, setModalState] = useState<boolean>(false);
   
   const onSubmit = async (data: IFormData) => {
+
     await API.put(
       `/employees/${employee.id}`,
       JSON.stringify({
-        employee: {
-          ...data.employee
-        },
-        personal_data: {
-          ...data.personal_data
-        }
+        ...data
       })
     )
-      .then((response) => (response.status))
+      .then((response) => {
+        console.log(response.data)
+        return response.status
+      })
       .then((status) => {
-        switch (status) {
-          case 201:
-            refreshEmployeesList();
-            break;
-          case 400:
-            console.log("status 400")
-            break;
-          case 409: 
-            console.log("status 409")
-            break;
-          default:
-            console.log("status default")
-            break;
+        console.log(status);
+        if(status === 201) {
+          refreshEmployeesList();
         }
-      }).catch((err: AxiosError) => {
-        console.log(err);
-        notification.notify(err.message);
+      }).catch((error: AxiosError) => {
+        const response = error.response?.data as { message: string };
+        notification.notify(response.message);
       }).finally(() => {
         setModalState(false);
       })
   };
 
   useEffect(() => {
-    if (!modalState) {
-      reset();
+    const defaultEmployeeValues = {
+      cpf: employee?.personal_data?.cpf || undefined,
+      email: employee?.personal_data?.email || undefined,
+      phone: employee?.personal_data?.phone || undefined,
+      role: employee?.role,
+      name: employee?.name,
     }
-  }, [modalState, reset]);
+    if (modalState && employee) {
+      reset(defaultEmployeeValues);
+    }
+
+  }, [modalState, reset, employee]);
 
   return (
     <button
@@ -90,8 +90,8 @@ const UpdateEmployeeModal = ({
         setModalState={setModalState}
       >
         <p>
-          Você deseja atualizar os dados referentes ao funcionário{" "}
-          <span className="italic font-semibold">{employee.name}</span>?
+          Você deseja atualizar os dados referentes ao funcionário 
+          <span className="italic font-semibold"> {employee?.name}</span>?
         </p>
         <form
           name="update_employee"
@@ -108,9 +108,8 @@ const UpdateEmployeeModal = ({
                 <input
                   className="border p-1 rounded focus:outline-none"
                   type="text"
-                  {...register("employee.name")}
+                  {...register("name")}
                   id="employee_name"
-                  defaultValue={employee.name}
                 />
               </div>
               <div className="flex flex-col">
@@ -118,10 +117,9 @@ const UpdateEmployeeModal = ({
                   Cargo:
                 </label>
                 <select
-                  // id="employee_role"
+                  id="employee_role"
                   className="p-1 rounded focus:outline-none"
-                  defaultValue={employee.role}
-                  {...register("employee.role")}
+                  {...register("role")}
                 >
                   <option value="admin">Administrador</option>
                   <option value="manager">Gerente</option>
@@ -141,8 +139,7 @@ const UpdateEmployeeModal = ({
                   className="border p-1 rounded focus:outline-none"
                   type="email"
                   id="personal_data_email"
-                  {...register("personal_data.email")}
-                  defaultValue={employee.personal_data?.email || ''}
+                  {...register("email")}
                 />
               </div>
               <div className="flex flex-col">
@@ -152,10 +149,9 @@ const UpdateEmployeeModal = ({
                 <input
                   className="border p-1 rounded focus:outline-none"
                   type="text"
-                  {...register("personal_data.cpf")}
+                  {...register("cpf")}
                   maxLength={11}
                   id="personal_data_cpf"
-                  defaultValue={employee.personal_data?.cpf || ''}
                 />
               </div>
               <div className="flex flex-col">
@@ -163,25 +159,30 @@ const UpdateEmployeeModal = ({
                   Telefone:
                 </label>
                 <input
-                  className="border p-1 rounded focus:outline-none"
+                  className={`border p-1 rounded focus:outline-none`}
                   type="tel"
-                  {...register("personal_data.phone")}
+                  {...register("phone")}
                   maxLength={11}
                   id="user_phone"
-                  defaultValue={employee.personal_data?.phone || ''}
                 />
               </div>
             </div>
           </fieldset>
-          <div>
-            {errors.personal_data?.phone && 
-              <p>{ errors.personal_data?.phone.message }</p>
-            }
+          <div
+            id="show_input_errors"
+            className="flex flex-col text-red text-xs mt-[4px]"
+          >
+            {errors &&
+              Object.values(errors).map((error) => {
+                console.log('aqui');
+                return <span className="w-[90%] text-wrap">{error?.message}</span>;
+              })}
           </div>
           <div className="w-full flex justify-center mt-3">
             <button
               type="submit"
-              className="bg-blue_light w-1/2 text-white rounded items-center"
+              disabled={!isValid}
+              className="bg-blue_light w-1/2 text-white rounded items-center disabled:bg-gray"
             >
               Atualizar
             </button>

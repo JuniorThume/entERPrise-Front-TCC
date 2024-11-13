@@ -44,7 +44,6 @@ const CreateEmployeeModal = ({
         if (err.response?.status === 409) {
           notification.notify("Já existe um funcionário com este nome")
         }
-        setModalState(false);
       }).finally(() => {
         setModalState(false);
       })

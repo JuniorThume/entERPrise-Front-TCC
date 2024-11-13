@@ -46,10 +46,8 @@ const Login = () => {
           navigate("/");
         }
       })
-      .catch((err: AxiosError) => {
-        if (err.status === 401) {
-          notification.notify("Usuário ou senha inválidos!")
-        }
+      .catch((error: AxiosError) => {
+        notification.notify(error.message);
       });
   };
 

@@ -3,6 +3,8 @@ import { API } from "../../../api/axios";
 import ModalWrapper from "../../../components/ModalWrapper";
 import { IEmployee } from "../../../interfaces/IEmployee";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { AxiosError } from "axios";
+import { useNotification } from "../../../context/notifyContext/hook/useNotification";
 
 interface IDeleteEmployeeModal {
   refreshEmployeesList: () => void;
@@ -13,6 +15,7 @@ const DeleteEmployeeModal = ({
   refreshEmployeesList,
   employee,
 }: IDeleteEmployeeModal) => {
+  const notification = useNotification();
   const [modalState, setModalState] = useState<boolean>(false);
   const deleteEmployee = async (id: number) => {
     await API.delete(`/employees/${id}`)
@@ -21,6 +24,9 @@ const DeleteEmployeeModal = ({
         if (status === 204) {
           refreshEmployeesList();
         }
+      })
+      .catch((error: AxiosError) => {
+        notification.notify(error.message);
       });
   };
 

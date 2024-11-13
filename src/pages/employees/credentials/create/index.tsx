@@ -9,6 +9,8 @@ import { CredentialFormData } from "../../../../zodSchemas/credentials/types";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { ICredential } from "../../../../interfaces/ICredential";
+import { useNotification } from "../../../../context/notifyContext/hook/useNotification";
+import { AxiosError } from "axios";
 
 interface ICreateCredetnailsModal {
   modalState: boolean;
@@ -23,6 +25,7 @@ const CreateCredentialModal = ({
   modalState,
   refreshCredentialsList,
 }: ICreateCredetnailsModal) => {
+  const notification = useNotification();
   const [employees, setEmployee] = useState<IEmployee[]>();
   const [credentials, setCredentials] = useState<ICredential[]>();
   const [employeeSelected, setEmployeeSelected] = useState<string>('');
@@ -64,7 +67,10 @@ const CreateCredentialModal = ({
           setModalState(false);
           refreshCredentialsList();
         }
-      });
+      })
+      .catch((error: AxiosError) => {
+        notification.notify(error.message);
+    })
   };
 
   useEffect(() => {

@@ -59,9 +59,9 @@ const Credentials = () => {
                   odd ? "bg-light_gray" : "bg-white rounded"
                 } `}
               >
-                <div>{employee?.name}</div>
-                <div>{credential?.username}</div>
-                <div>{ISOtoBrFormat(new Date(credential?.created_at))}</div>
+                <div className="overflow-hidden">{employee?.name}</div>
+                <div className="overflow-hidden">{credential?.username}</div>
+                <div className="overflow-hidden">{ISOtoBrFormat(new Date(credential?.created_at))}</div>
 
                 <div className="flex justify-center items-center gap-[20px]">
                   <UpdateCredentialModal refreshCredentialList={handleRefreshCredential} credential={credential} employee={employee}/>

@@ -62,15 +62,15 @@ const Employees = () => {
                   odd ? "bg-light_gray" : "bg-white rounded"
                 } `}
               >
-                <div>
+                <div className="overflow-hidden">
                   {
                     roles[employee?.role as keyof typeof roles]
                   }
                 </div>
-                <div>{employee?.name}</div>
-                <div className={`${!personal_data && 'italic text-sm'} `}>{personal_data ? personal_data?.email : 'E-mail não cadastrado' }</div>
+                <div className="overflow-hidden">{employee?.name}</div>
+                <div className={`${!personal_data && 'italic text-sm'} overflow-hidden`}>{personal_data ? personal_data?.email : 'E-mail não cadastrado' }</div>
                 <div
-                  className={`${!personal_data?.phone && "italic text-sm"}  `}
+                  className={`${!personal_data?.phone && "italic text-sm"} overflow-hidden `}
                 >
                   {personal_data?.phone ? personal_data.phone : "Não há contato"}
                 </div>
