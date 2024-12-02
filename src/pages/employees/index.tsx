@@ -6,31 +6,36 @@ import { IEmployee } from "../../interfaces/IEmployee";
 import CreateEmployeeModal from "./create";
 import DeleteEmployeeModal from "./delete";
 import UpdateEmployeeModal from "./update";
+import { privilegeVerify } from "../../utils/privilegeVerify";
+import { useAppContext } from "../../context/appContext/hook/useAppContext";
 
 enum roles {
-  salesman = "Vendedor",
-  admin = "Administrador",
-  manager = "Gerente",
+  'admin' = 'Administrador',
+  'manager' ='Gerente',
+  'salesman' = 'Vendedor',
 }
 
 const Employees = () => {
   const [employeesList, setEmployeesList] = useState<IEmployee[]>();
   const [refreshList, setRefreshList] = useState(false);
   const [createEmployeeModalState, setCreateEmployeeModalState] = useState<boolean>(false);
+  const user_role = useAppContext().user.role;
   const handleRefreshList = () => {
     setRefreshList(prev => !prev);
   }
 
   useEffect(() => {
-    API.get("http://localhost:3000/api/v1/employees")
-      .then((response) => response.data)
-      .then((data: IEmployee[]) => {
-        setEmployeesList(data)
-      });
-  }, [refreshList]);
+    if (privilegeVerify(user_role as keyof typeof roles, 'employees')) {
+      API.get("/employees")
+        .then((response) => response.data)
+        .then((data: IEmployee[]) => {
+          setEmployeesList(data)
+        });
+    }
+  }, [refreshList, user_role]);
 
   return (
-    <div className="flex flex-col gap-y-[30px] font-[Montserrat]">
+    <div className="flex flex-col gap-y-[30px] font-[Montserrat] pb-[40px] ">
       <div className="flex flex-col gap-y-[10px]">
         <h2 className="text-2xl">Funcionarios</h2>
         <button

@@ -6,6 +6,7 @@ import { jwtData } from "../../pages/login";
 export type UserType = {
   username: string;
   id: number;
+  role: string;
 };
 
 type PropsAppContext = {
@@ -27,6 +28,7 @@ const DEFAULT_VALUE = {
   user: {
     username: "",
     id: 0,
+    role: ""
   },
   token: null,
   isLogged: false,

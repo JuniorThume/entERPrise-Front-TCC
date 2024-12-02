@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAppContext } from "../../../../context/appContext/hook/useAppContext";
+import { useEffect } from "react";
+import { useResolvedPath } from "react-router-dom";
 
 interface props {
   name: string;
@@ -7,14 +9,18 @@ interface props {
 }
 const ItemMenu = ({ name, linkTo = "#" }: props) => {
   const contextApp = useAppContext();
-  const pathSelect = location.pathname.split('/')[1];
+  const test = useResolvedPath(window.location.pathname).pathname.split('/')[1];
+
+  useEffect(() => {
+    console.log(test);
+  }, [test]);
 
   return (
     <Link to={`/${linkTo}`} onClick={() => contextApp.setPath(linkTo)}>
       <div className="text-black border-transparent text-lg m-4 ">
         <p
           className={`transition-[0.01] px-2 hover:ml-1 hover:border-l-2 hover:text-white ${
-            linkTo == pathSelect && "border-l-2 text-white ml-1"
+            linkTo == test && "border-l-2 text-white ml-1"
           }`}
         >
           {name}

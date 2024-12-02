@@ -71,7 +71,6 @@ const Products = () => {
             return response.data;
           })
           .then((result: IResponsePaginate) => {
-            console.log(result);
             result.data.forEach((item: IProduct) => {
               if (item.image) {
                 item.image = setStringImage(item.image);
@@ -90,7 +89,7 @@ const Products = () => {
             if (err.status === 401) {
               refreshTokenRequest(contextApp.setToken);
             }
-            console.log(err);
+            // console.log(err);
           });
       }
     };

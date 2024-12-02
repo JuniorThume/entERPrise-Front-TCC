@@ -19,7 +19,7 @@ const Home = () => {
           <h3 className="underline mb-2">ATUALIZAÇÕES</h3>
           <p className="indent-5">
             Esta é versão 1.0 do sistema, que conta inicialmente com o
-            gerenciamento de produtos!
+            gerenciamento de produtos e funcionários!
           </p>
         </div>
         <div>

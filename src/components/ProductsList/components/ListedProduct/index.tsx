@@ -20,7 +20,7 @@ const ListedProduct = ({ product, refreshProductList }: IShapeProductProps) => {
           className="w-[60px] h-[60px] rounded-full"
         />
       </div>
-      <div>{product?.name}</div>
+      <div>{product?.code}</div>
       <div>{product?.brand}</div>
       <div>{product?.category}</div>
       <div>{product?.genre}</div>

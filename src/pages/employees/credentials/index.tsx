@@ -19,7 +19,8 @@ const Credentials = () => {
   }
 
   useEffect(() => {
-    API.get("http://localhost:3000/api/v1/credentials")
+    
+    API.get("http://localhost:3000/api/v1/employees/credentials")
       .then((response) => response.data)
       .then((data: ICredential[]) => {
         setCredentialList(data);

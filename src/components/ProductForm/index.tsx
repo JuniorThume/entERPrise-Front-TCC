@@ -151,30 +151,54 @@ const ProductForm = ({
               rules={{ required: true }}
             />
           </div>
-          <div className="flex flex-col justify-center">
-            <label htmlFor="input_genre">Gênero:</label>
-            <div>
-              <select
-                id="input_genre"
-                {...register("product_genre", { required: true })}
-                onChange={() => {
-                  setDefaultOption(false);
+          <div className="flex gap-x-4 items-center">
+            <div className="flex flex-col">
+              <label htmlFor="input_genre">Gênero:</label>
+              <div>
+                <select
+                  id="input_genre"
+                  {...register("product_genre", { required: true })}
+                  onChange={() => {
+                    setDefaultOption(false);
+                  }}
+                  className={`bg-white text-black border p-1 rounded-sm placeholder:text-xs ${
+                    errors.product_genre ? "border-red" : "border-black"
+                  }`}
+                  defaultValue={product ? product.genre : ""}
+                >
+                  {defaultOption && (
+                    <option value="" className="text-xs">
+                      Selecione
+                    </option>
+                  )}
+                  <option value="Feminino">Feminino</option>
+                  <option value="Infantil">Infantil</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Unissex">Unissex</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center w-1/2">
+              <label htmlFor="input_code">Código:</label>
+              <Controller
+                name="product_code"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <input
+                      {...field}
+                      id="input_code"
+                      autoComplete="off"
+                      defaultValue={product ? product.code : ""}
+                      className={`bg-white border p-1 rounded-sm placeholder:text-xs ${
+                        errors.product_material ? "border-red" : "border-black"
+                      }`}
+                      placeholder="Código do produto"
+                    />
+                  );
                 }}
-                className={`bg-white text-black border p-1 rounded-sm placeholder:text-xs ${
-                  errors.product_genre ? "border-red" : "border-black"
-                }`}
-                defaultValue={product ? product.genre : ""}
-              >
-                {defaultOption && (
-                  <option value="" className="text-xs">
-                    Selecione
-                  </option>
-                )}
-                <option value="Feminino">Feminino</option>
-                <option value="Infantil">Infantil</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Unissex">Unissex</option>
-              </select>
+                rules={{ required: false }}
+              />
             </div>
           </div>
           <div className="flex flex-col col-span-2 justify-center">
@@ -258,7 +282,7 @@ const ProductForm = ({
             </>
           )}
         </div>
-        <div className="text-white flex flex-col justify-self-center self-center">
+        <div className="text-white flex flex-col justify-self-end self-center">
           <div className="relative text-black w-full flex justify-center">
             {productImgFile && (
               <button
@@ -282,7 +306,7 @@ const ProductForm = ({
             accept="image/*"
             {...register("product_image")}
             ref={imageInput}
-            className="text-[10px] text-black mt-1"
+            className="text-[10px] text-black mt-1 border-none"
             onChange={setProductImgOnChange}
           />
         </div>

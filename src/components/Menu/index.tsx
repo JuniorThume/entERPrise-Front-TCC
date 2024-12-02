@@ -3,9 +3,11 @@ import "../../App.css";
 import { useContext } from "react";
 import AppContext from "../../context/appContext/AppContext";
 import { Link } from "react-router-dom";
+import { menuItems } from "../../consts/menuItems";
+import { roles } from "../../consts/privilege";
 
 const Menu = () => {
-  const { setIsLogged } = useContext(AppContext);
+  const { setIsLogged, user } = useContext(AppContext);
   return (
     <div className="fixed top-0 flex flex-col h-[100vh] w-[20%] bg-[--menu-background] shadow-menu">
       <div className="text-white text-center p-8 font-bold">
@@ -15,13 +17,13 @@ const Menu = () => {
         </Link>
       </div>
       <div className="flex flex-col justify-between h-100">
-        <div className="">
-          <ItemMenu name="Produtos" linkTo="products" />
-          <ItemMenu name="Clientes" linkTo="customers" />
-          <ItemMenu name="Vendas" linkTo="salles" />
-          <ItemMenu name="Funcionários" linkTo="employees" />
-          <ItemMenu name="Fornecedores" linkTo="suppliers" />
-          <ItemMenu name="Compras" linkTo="purchases" />
+        <div>
+          {Object.entries(menuItems).map((item, index) => {
+            const privilege = roles[user.role as keyof typeof roles];
+            if (privilege?.includes(item[1])) {
+              return <ItemMenu key={index} name={item[0]} linkTo={item[1]} />
+            }
+          })}
         </div>
       </div>
       <div className="text-black text-center hover:text-light_gray self-center">

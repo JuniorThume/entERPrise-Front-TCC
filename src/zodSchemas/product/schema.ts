@@ -5,6 +5,8 @@ const CreateProductFormSchema = z.object({
   .min(3, "O Nome deve conter no mínimo 3 caracteres"),
   product_brand: z.string({message: "Marca é um campo obrigatório"})
     .min(3, "A Marca deve conter no mínimo 3 caracteres"),
+  product_code: z.string({message: "Código do produto é um campo obrigatório"})
+    .length(8, "O Código deve conter 8 caracteres"),
   product_category: z.string({message: "Categoria é um campo obrigatório"})
     .min(3, "A Categoria deve conter no mínimo 3 caracteres"),
   product_material: z.string({message: "Material é um campo obrigatório"})

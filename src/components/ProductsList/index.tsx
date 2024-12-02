@@ -27,11 +27,11 @@ const ProductList = ({
             <>
               <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] text-center px-5 italic text-xs">
                 <span>Imagem</span>
-                <span>Nome</span>
+                <span>Código</span>
                 <span>Marca</span>
                 <span>Categoria</span>
                 <span>Gênero</span>
-                <span>detalhes</span>
+                <span>Opções</span>
                 <span className="justify-self-end col-span-2 mr-10">Ações</span>
               </div>
               {productsArr.map((productItem: IProduct, index: number) => {

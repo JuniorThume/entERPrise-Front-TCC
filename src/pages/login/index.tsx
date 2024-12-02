@@ -30,7 +30,7 @@ const Login = () => {
   const navigate = useNavigate();
   const onSubmit = async (dados: LoginFormData) => {
     await API.post(
-      "/credentials/login",
+      "/employees/credentials/login",
       JSON.stringify({ username: dados.username, password: dados.password })
     )
       .then((response) => response.data)
@@ -41,12 +41,14 @@ const Login = () => {
           setUser({
             id: jwt_data.user.id,
             username: jwt_data.user.username,
+            role: jwt_data.user.role
           });
           setIsLogged(true);
           navigate("/");
         }
       })
       .catch((error: AxiosError) => {
+        console.log(error)
         notification.notify(error.message);
       });
   };

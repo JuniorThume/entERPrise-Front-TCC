@@ -9,6 +9,7 @@ import { useNotification } from "../../../context/notifyContext/hook/useNotifica
 export interface ISubmitForm {
   product_name: string;
   product_description: string;
+  product_code: string;
   product_category: string;
   product_brand: string;
   product_material: string;
@@ -26,6 +27,7 @@ const CreateProduct = () => {
       "/products",
       JSON.stringify({
         name: dados.product_name,
+        code: dados.product_code,
         description: dados.product_description,
         category: dados.product_category,
         brand: dados.product_brand,

@@ -1,5 +1,6 @@
 export interface IProduct {
   brand: string;
+  code: string;
   category: string;
   description: string;
   genre: string;
