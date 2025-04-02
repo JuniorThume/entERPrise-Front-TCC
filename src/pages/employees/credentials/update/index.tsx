@@ -62,7 +62,7 @@ const UpdateCredentialModal = ({
   const onSubmit = async (data: IFormData) => {
     if (contextApp.token) {
       await API.put(
-        `/credentials/${credential.employee_id}`,
+        `/employees/credentials/${credential.employee_id}`,
         JSON.stringify({
           ...data,
         }),

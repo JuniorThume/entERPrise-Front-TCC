@@ -47,14 +47,14 @@ const CreateCredentialModal = ({
   };
 
   const getCredentials = async () => {
-    await API.get("/credentials")
+    await API.get("/employees/credentials")
       .then((response) => response.data)
       .then((data) => setCredentials(data));
   };
 
   const onSubmit = async (data: CredentialFormData) => {
     await API.post(
-      "/credentials",
+      "/employees/credentials",
       JSON.stringify({
         username: data.credential_username,
         password: data.credential_password,

@@ -21,7 +21,8 @@ const DeleteCredentialModal = ({
   const [modalState, setModalState] = useState<boolean>(false);
   const contextApp = useAppContext();
   const deleteCredential = async (id: number) => {
-    await API.delete(`/credentials/${id}`)
+    console.log(credential)
+    await API.delete(`/employees/credentials/${id}`)
       .then((response) => response.status)
       .then((status) => {
         if (status === 204) {
@@ -52,7 +53,7 @@ const DeleteCredentialModal = ({
         <div className="w-full flex justify-center mt-3">
           <button
             className="bg-blood_red w-1/2 text-white rounded items-center"
-            onMouseUp={async () => await deleteCredential(credential.employee_id)}
+            onMouseUp={async () => await deleteCredential(credential.employee.id)}
           >
             Excluir
           </button>
